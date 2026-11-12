@@ -1,0 +1,9 @@
+{
+    "githubPullRequests.experimental.chat": false,
+    "githubPullRequests.notifications": "pullRequests",
+    "githubPullRequests.experimental.notificationsMarkPullRequests": "markAsDone",
+    "githubPullRequests.experimental.useQuickChat": true,
+    "chat.agent.enabled": true,
+    "chat.agent.sandbox.enabled": "on",
+    "chat.agent.sandbox.network.allowLocalNetwork": true
+}
