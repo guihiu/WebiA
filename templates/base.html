@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="{{ locale }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>{% block title %}WebiA{% endblock %} · WebiA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="container" aria-label="Main navigation">
+        <a class="brand" href="{{ url_for('home') }}" aria-label="WebiA">WebiA</a>
+        <ul>
+          <li><a href="{{ url_for('home') }}">{{ text.nav_home }}</a></li>
+          <li><a href="{{ url_for('mlp') }}">{{ text.nav_mlp }}</a></li>
+          <li><a href="{{ url_for('rbf') }}">{{ text.nav_rbf }}</a></li>
+          <li><a href="{{ url_for('mlp_training') }}">{{ text.nav_mlp_training }}</a></li>
+          <li><a href="{{ url_for('rbf_training') }}">{{ text.nav_rbf_training }}</a></li>
+          <li><a href="{{ url_for('training_data') }}">{{ text.nav_training_data }}</a></li>
+        </ul>
+        <details class="language-menu">
+          <summary>{{ text.language }}: {{ text.name }}</summary>
+          <div class="language-options">
+            {% for code in supported_locales %}
+              <a href="{{ url_for('set_language', locale=code, next=request.path) }}"
+                 {% if code == locale %}aria-current="true"{% endif %}>
+                {{ {"pt": "Português", "en": "English", "es": "Español"}[code] }}
+              </a>
+            {% endfor %}
+          </div>
+        </details>
+      </nav>
+    </header>
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="container">
+      <small>MLP &amp; RBF</small>
+    </footer>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ text.rbf_training_title }}{% endblock %}
+{% block content %}
+  <section class="training-hero">
+    <p class="eyebrow">RBF</p>
+    <h1>{{ text.rbf_training_title }}</h1>
+    <p>{{ text.rbf_training_intro }}</p>
+  </section>
+
+  <p class="training-notice" role="note">{{ text.training_notice }}</p>
+  <noscript><p class="training-notice">{{ text.javascript_required }}</p></noscript>
+
+  <section class="training-panel" aria-label="{{ text.rbf_training_title }}">
+    <form class="training-form" data-rbf-config
+          data-summary-template="{{ text.rbf_configuration_summary }}">
+      <label class="field" for="radial-units">
+        <span class="field-label">{{ text.radial_units }}</span>
+        <input id="radial-units" data-radial-units type="number"
+               min="1" max="512" value="16" required>
+      </label>
+
+      <label class="field" for="radial-spread">
+        <span class="field-label">{{ text.spread }}</span>
+        <input id="radial-spread" data-spread type="number"
+               min="0.01" max="1000" step="0.01" value="1" required>
+      </label>
+
+      <label class="field" for="rbf-activation">
+        <span class="field-label">{{ text.output_activation }}</span>
+        <select id="rbf-activation" data-activation>
+          <option value="linear">{{ text.activation_linear }}</option>
+          <option value="sigmoid">{{ text.activation_sigmoid }}</option>
+          <option value="softmax">{{ text.activation_softmax }}</option>
+        </select>
+      </label>
+
+      <button class="button" type="button" data-preview-trigger>
+        {{ text.preview_configuration }}
+      </button>
+    </form>
+
+    <section class="configuration-preview" data-preview aria-live="polite" hidden>
+      <h2>{{ text.configuration_preview }}</h2>
+      <p data-preview-result></p>
+    </section>
+  </section>
+{% endblock %}
+{% block scripts %}
+  <script src="{{ url_for('static', filename='training.js') }}" defer></script>
+{% endblock %}

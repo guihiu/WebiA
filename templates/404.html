@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}404 — {{ text.not_found }}{% endblock %}
+{% block content %}
+  <section class="hero">
+    <p class="eyebrow">404</p>
+    <h1>{{ text.not_found }}</h1>
+    <p>{{ text.not_found_text }}</p>
+    <p><a class="button" href="{{ url_for('home') }}">{{ text.back_home }}</a></p>
+  </section>
+{% endblock %}

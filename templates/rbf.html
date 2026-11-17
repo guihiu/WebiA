@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}RBF — {{ text.rbf_title }}{% endblock %}
+{% block content %}
+  <section class="detail-hero rbf-detail">
+    <p class="eyebrow">RBF</p>
+    <h1>{{ text.rbf_title }}</h1>
+  </section>
+  <div class="detail-grid">
+    <article>
+      <h2>{{ text.architecture }}</h2>
+      <p>{{ text.rbf_arch }}</p>
+    </article>
+    <article>
+      <h2>{{ text.how_it_learns }}</h2>
+      <p>{{ text.rbf_learns }}</p>
+    </article>
+    <article>
+      <h2>{{ text.strengths }}</h2>
+      <ul><li>{{ text.rbf_strength_1 }}</li><li>{{ text.rbf_strength_2 }}</li></ul>
+    </article>
+    <article>
+      <h2>{{ text.considerations }}</h2>
+      <p>{{ text.rbf_cons }}</p>
+    </article>
+  </div>
+  <p><a class="back-link" href="{{ url_for('home') }}">← {{ text.back_home }}</a></p>
+{% endblock %}

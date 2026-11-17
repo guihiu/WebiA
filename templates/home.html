@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ text.home_title }}{% endblock %}
+{% block content %}
+  <section class="hero">
+    <p class="eyebrow">Artificial Intelligence</p>
+    <h1>{{ text.home_title }}</h1>
+    <p>{{ text.home_intro }}</p>
+  </section>
+
+  <section class="network-grid" aria-label="{{ text.home_title }}">
+    <article class="network-card">
+      <div class="badge">MLP</div>
+      <h2>{{ text.mlp_title }}</h2>
+      <p>{{ text.mlp_short }}</p>
+      <a class="button" href="{{ url_for('mlp') }}">{{ text.learn_mlp }}</a>
+    </article>
+    <article class="network-card rbf-card">
+      <div class="badge">RBF</div>
+      <h2>{{ text.rbf_title }}</h2>
+      <p>{{ text.rbf_short }}</p>
+      <a class="button" href="{{ url_for('rbf') }}">{{ text.learn_rbf }}</a>
+    </article>
+  </section>
+
+  <section class="comparison">
+    <h2>{{ text.comparison_title }}</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">{{ text.table_feature }}</th>
+            <th scope="col">{{ text.table_mlp }}</th>
+            <th scope="col">{{ text.table_rbf }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">{{ text.represent }}</th><td>{{ text.represent_mlp }}</td><td>{{ text.represent_rbf }}</td></tr>
+          <tr><th scope="row">{{ text.learning }}</th><td>{{ text.learning_mlp }}</td><td>{{ text.learning_rbf }}</td></tr>
+          <tr><th scope="row">{{ text.best }}</th><td>{{ text.best_mlp }}</td><td>{{ text.best_rbf }}</td></tr>
+          <tr><th scope="row">{{ text.interpret }}</th><td>{{ text.interpret_mlp }}</td><td>{{ text.interpret_rbf }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}
