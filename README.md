@@ -11,6 +11,10 @@ python app.py
 
 Open `http://127.0.0.1:5000`.
 
+On the MLP and RBF training pages, use **Visualizar configuração** to preview
+the current settings and save them as `mlp.json` or `rbf.json` in the project
+directory. A later preview replaces the corresponding file.
+
 ## Test
 
 ```text

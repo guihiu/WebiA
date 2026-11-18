@@ -1,0 +1,12 @@
+import json
+from tensorflow.keras.layers import Dense, Dropout
+
+# Abre o arquivo JSON com a codificação correta
+path="D:\ws\ws-python\WebiA\WebiA\mlp.json"
+
+D={}
+def net(path):
+    with open(path, 'r', encoding='utf-8') as arquivo:
+        D = json.loads(arquivo)
+
+print(D)

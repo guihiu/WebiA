@@ -1,13 +1,16 @@
+import json
+
 import pytest
 
 from app import create_app
 
 
 @pytest.fixture()
-def client():
+def client(tmp_path):
     app = create_app({
         "TESTING": True,
         "SECRET_KEY": "test-only",
+        "CONFIG_OUTPUT_DIR": str(tmp_path),
     })
     return app.test_client()
 
@@ -32,6 +35,51 @@ def test_training_pages_render_configuration_controls(client):
     assert b'data-activation-template' in mlp_response.data
     assert b'data-rbf-config' in rbf_response.data
     assert b'data-radial-units' in rbf_response.data
+    assert b'data-save-url="/save-configuration/mlp"' in mlp_response.data
+    assert b'data-save-url="/save-configuration/rbf"' in rbf_response.data
+
+
+def test_saving_mlp_configuration_writes_json_file(client, tmp_path):
+    configuration = {
+        "hidden_layers": [
+            {"neurons": 24, "activation": "tanh"},
+            {"neurons": 8, "activation": "relu"},
+        ],
+    }
+
+    response = client.post("/save-configuration/mlp", json=configuration)
+
+    assert response.status_code == 200
+    assert response.json == {"filename": "mlp.json"}
+    assert json.loads(
+        (tmp_path / "mlp.json").read_text(encoding="utf-8")
+    ) == configuration
+
+
+def test_saving_rbf_configuration_writes_json_file(client, tmp_path):
+    configuration = {
+        "radial_units": 32,
+        "spread": 0.75,
+        "activation": "sigmoid",
+    }
+
+    response = client.post("/save-configuration/rbf", json=configuration)
+
+    assert response.status_code == 200
+    assert response.json == {"filename": "rbf.json"}
+    assert json.loads(
+        (tmp_path / "rbf.json").read_text(encoding="utf-8")
+    ) == configuration
+
+
+def test_invalid_configuration_is_not_saved(client, tmp_path):
+    response = client.post(
+        "/save-configuration/mlp",
+        json={"hidden_layers": [{"neurons": 0, "activation": "relu"}]},
+    )
+
+    assert response.status_code == 400
+    assert not (tmp_path / "mlp.json").exists()
 
 
 def test_training_data_page_accepts_csv_and_offers_page_sizes(client):

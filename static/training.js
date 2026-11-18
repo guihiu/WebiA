@@ -53,11 +53,17 @@ document.querySelectorAll("[data-mlp-config]").forEach((form) => {
   layerCount.addEventListener("input", renderLayers);
   renderLayers();
 
-  form.querySelector("[data-preview-trigger]").addEventListener("click", () => {
+  form.querySelector("[data-preview-trigger]").addEventListener("click", async () => {
     if (!form.reportValidity()) {
       return;
     }
 
+    const hiddenLayers = Array.from(layerList.querySelectorAll(".layer-row"), (row) => {
+      return {
+        neurons: Number(row.querySelector("input").value),
+        activation: row.querySelector("select").value,
+      };
+    });
     const settings = Array.from(layerList.querySelectorAll(".layer-row"), (row, index) => {
       const activation = row.querySelector("select").selectedOptions[0].textContent;
       return form.dataset.layerSummaryTemplate
@@ -71,16 +77,18 @@ document.querySelectorAll("[data-mlp-config]").forEach((form) => {
     const preview = form.parentElement.querySelector("[data-preview]");
     preview.querySelector("[data-preview-result]").textContent = summary;
     preview.hidden = false;
+    await saveConfiguration(form, { hidden_layers: hiddenLayers }, preview);
   });
 });
 
 document.querySelectorAll("[data-rbf-config]").forEach((form) => {
-  form.querySelector("[data-preview-trigger]").addEventListener("click", () => {
+  form.querySelector("[data-preview-trigger]").addEventListener("click", async () => {
     if (!form.reportValidity()) {
       return;
     }
 
-    const activation = form.querySelector("[data-activation]").selectedOptions[0].textContent;
+    const activationInput = form.querySelector("[data-activation]");
+    const activation = activationInput.selectedOptions[0].textContent;
     const summary = form.dataset.summaryTemplate
       .replace("{units}", form.querySelector("[data-radial-units]").value)
       .replace("{spread}", form.querySelector("[data-spread]").value)
@@ -88,5 +96,31 @@ document.querySelectorAll("[data-rbf-config]").forEach((form) => {
     const preview = form.parentElement.querySelector("[data-preview]");
     preview.querySelector("[data-preview-result]").textContent = summary;
     preview.hidden = false;
+    await saveConfiguration(form, {
+      radial_units: Number(form.querySelector("[data-radial-units]").value),
+      spread: Number(form.querySelector("[data-spread]").value),
+      activation: activationInput.value,
+    }, preview);
   });
 });
+
+async function saveConfiguration(form, configuration, preview) {
+  const result = preview.querySelector("[data-save-result]");
+  result.textContent = "";
+
+  try {
+    const response = await fetch(form.dataset.saveUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(configuration),
+    });
+    if (!response.ok) {
+      throw new Error("save failed");
+    }
+
+    const { filename } = await response.json();
+    result.textContent = form.dataset.savedMessage.replace("{filename}", filename);
+  } catch {
+    result.textContent = form.dataset.saveError;
+  }
+}

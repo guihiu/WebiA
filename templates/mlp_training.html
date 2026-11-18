@@ -12,6 +12,9 @@
 
   <section class="training-panel" aria-label="{{ text.mlp_training_title }}">
     <form class="training-form" data-mlp-config
+          data-save-url="{{ url_for('save_configuration', network='mlp') }}"
+          data-saved-message="{{ text.configuration_saved }}"
+          data-save-error="{{ text.configuration_save_error }}"
           data-summary-template="{{ text.mlp_configuration_summary }}"
           data-layer-summary-template="{{ text.mlp_layer_summary }}">
       <label class="field" for="hidden-layer-count">
@@ -67,6 +70,7 @@
     <section class="configuration-preview" data-preview aria-live="polite" hidden>
       <h2>{{ text.configuration_preview }}</h2>
       <p data-preview-result></p>
+      <p data-save-result role="status"></p>
     </section>
   </section>
 {% endblock %}

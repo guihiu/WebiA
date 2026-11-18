@@ -1,0 +1,16 @@
+{
+  "hidden_layers": [
+    {
+      "neurons": 16,
+      "activation": "relu"
+    },
+    {
+      "neurons": 16,
+      "activation": "relu"
+    },
+    {
+      "neurons": 16,
+      "activation": "relu"
+    }
+  ]
+}
